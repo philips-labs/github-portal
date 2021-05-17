@@ -10,6 +10,7 @@ Work in progress - Functional, but not ready for production.
 ## Technology Stack
 [Blazor Web Assembly](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)  
 .NET Core 3.1
+[TailwindCSS](https://tailwindcss.com/)
 
 ## Information
 More information(such as getting-started, demo page, etc) is coming soon.
