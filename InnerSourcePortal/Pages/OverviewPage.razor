@@ -1,0 +1,322 @@
+@using InnerSourcePortal.Models
+@using InnerSourcePortal.Services
+@using InnerSourcePortal.Shared
+@using Microsoft.AspNetCore.Components
+@inject IRepositoryService _repositoryService
+
+@if (_repositories == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <Modal IsOpen="@_isModalOpen" HeaderClass="flex justify-between bg-blue-500 md:p-4 lg:p-6" FooterClass="bg-blue-500 cursor-pointer">
+        <Header>
+            @if (_selectedRepo != null)
+            {
+                @_selectedRepo.Name
+            }
+            <button type="button" class="" @onclick="@CloseModal">&times;</button>
+        </Header>
+        <Body>
+        @if (_selectedRepo != null)
+        {
+            @_selectedRepo.Language
+            @foreach (string topic in _selectedRepo.InnerSourceMetadata.Topics)
+            {
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                    @topic
+                </span>
+            }
+        }
+        </Body>
+        <Footer>
+            @if (_selectedRepo != null)
+            {
+                <a href="@_selectedRepo.HtmlUrl">
+                    <div class="my-3 hover:underline">
+                        Contribute
+                    </div>
+                </a>
+            }
+        </Footer>
+    </Modal>
+
+    <div class="min-h-screen flex px-4">
+        <div class='overflow-x-auto w-full'>
+            <div class="flex justify-between">
+                <div class="flex flex-col justify-center flex-1">
+                    <label for="language">Filter by language:</label>
+                    <select @bind="SelectedLanguage" id="language" class="border-solid border-1 border-blue-300 hover:border-2 hover:border-blue-500">
+                        @if (_languages != null)
+                        {
+                            @foreach (string language in _languages)
+                            {
+                                <option value="@language">@language</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="flex flex-col justify-center flex-1">
+                    <label for="search">Search:</label>
+                    <div class="flex">
+                        <input @bind-value="Text" @bind-value:event="oninput" placeholder="Search for @_totalRepoCount repositories" type="text" id="search" class="w-60 border-solid border-1 border-black hover:border-2 hover:border-blue-500"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center flex-1">
+                    <label for="sort">Sort by:</label>
+                    <select @bind="SortType" id="sort" class="border-solid border-1 border-blue-300 hover:border-2 hover:border-blue-500">
+                        @if (_sortTypes != null)
+                        {
+                            @foreach (string sortType in _sortTypes)
+                            {
+                                <option value="@sortType">@sortType</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+            </div>
+            <table class='mx-auto max-w-screen-2xl w-full rounded-lg bg-white divide-y divide-gray-300'>
+                <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider max-w-100px">
+                        Name
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Description
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Language
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Stars
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Issues
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Forks
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Score
+                    </th>
+                    <th class="relative px-6 py-3">
+                        <span class="sr-only">Contribute</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                @foreach (Repository repo in _repositories)
+                {
+                    <tr @onclick="() => ShowDetailedRepositoryModal(repo)" class="cursor-pointer">
+                        <td class="px-6 py-4 whitespace-nowrap max-w-md">
+                            <div class="flex items-center truncate">
+                                <div class="ml-1">
+                                    <div class="text-sm font-medium text-gray-900">
+                                        @repo.Name
+                                    </div>
+                                    <div class="text-sm text-gray-500 max-w-100px">
+                                        <a href="@repo.HtmlUrl" class="hover:underline">@repo.FullName</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-normal">
+                            <div class="text-sm text-gray-900 line-clamp-3">
+                                <p class="line-clamp-4">@repo.Description</p>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                @repo.Language
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @repo.StargazersCount
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @repo.OpenIssuesCount
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @repo.ForksCount
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @repo.InnerSourceMetadata.Score
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a href="@repo.Url" class="text-blue-600 hover:text-blue-900 hover:underline">Contribute</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+}
+
+@code {
+    private List<Repository> _repositories;
+    private IEnumerable<Repository> _originalRepositories;
+    private List<string> _languages;
+    bool _isModalOpen = false;
+    private Repository _selectedRepo;
+    private string _text;
+    private bool _queued = false;
+    private bool _loading = false;
+    private int _totalItems;
+    private int _totalRepoCount;
+
+    private List<string> _sortTypes = new List<string>
+    {
+        "Name",
+        "Activity",
+        "Stars",
+        "Watchers",
+        "Issues"
+    };
+
+    private string _sortType;
+
+    private string SortType
+    {
+        get => _sortType;
+        set
+        {
+            if (value != _sortType)
+            {
+                _sortType = value;
+                InvokeAsync(LoadRepositoriesBasedOnSortType);
+            }
+        }
+    }
+
+
+    private string _selectedLanguage;
+
+    private string SelectedLanguage
+    {
+        get => _selectedLanguage;
+        set
+        {
+            if (value != _selectedLanguage)
+            {
+                _selectedLanguage = value;
+                InvokeAsync(LoadRepositoriesForSpecificLanguageAsync);
+            }
+        }
+    }
+
+    private void ShowDetailedRepositoryModal(Repository repo)
+    {
+        _isModalOpen = true;
+        _selectedRepo = repo;
+    }
+
+    private void CloseModal()
+    {
+        _isModalOpen = false;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _originalRepositories = await _repositoryService.GetAllRepositories().ConfigureAwait(false);
+        _repositories = _originalRepositories.ToList();
+        _languages = await _repositoryService.GetAllLanguagesFromRepos(_repositories).ConfigureAwait(false);
+        _totalRepoCount = _originalRepositories.Count();
+    }
+
+    private string Text
+    {
+        get => _text;
+        set
+        {
+            if (value != _text)
+            {
+                _text = value;
+                InvokeAsync(OnSearchAsync);
+            }
+        }
+    }
+
+    private void Reset()
+    {
+        _totalItems = 0;
+        _text = string.Empty;
+        _repositories = _originalRepositories.ToList();
+        StateHasChanged();
+    }
+
+    private async Task OnSearchAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(_text))
+        {
+            if (_loading)
+            {
+                _queued = true;
+                return;
+            }
+
+            do
+            {
+                string textToSearch = _text.ToLowerInvariant();
+                _loading = true;
+                _queued = false;
+                _repositories = _originalRepositories.Where(r =>
+                    r.Name.ToLowerInvariant().Contains(textToSearch) ||
+                    r.InnerSourceMetadata.Topics.Any(s => s.ToLowerInvariant().Contains(textToSearch)) ||
+                    r.Homepage != null && r.Homepage.ToLowerInvariant().Contains(textToSearch) ||
+                    r.Description != null && r.Description.ToLowerInvariant().Contains(textToSearch) ||
+                    r.FullName != null && r.FullName.ToLowerInvariant().Contains(textToSearch) ||
+                    r.HtmlUrl != null && r.HtmlUrl.ToLowerInvariant().Contains(textToSearch) ||
+                    r.License is {Name: { } } && r.License.Name.ToLowerInvariant().Contains(textToSearch) ||
+                    r.Language != null && r.Language.ToLowerInvariant().Contains(textToSearch)).ToList();
+                _totalItems = _repositories.Count;
+                _loading = false;
+            } while (_queued);
+            await InvokeAsync(StateHasChanged);
+        }
+        else
+        {
+            Reset();
+        }
+    }
+
+    private async Task LoadRepositoriesForSpecificLanguageAsync()
+    {
+        _repositories = _originalRepositories.Where(r => r.Language != null && r.Language.ToLowerInvariant().Contains(_selectedLanguage.ToLowerInvariant())).ToList();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task LoadRepositoriesBasedOnSortType()
+    {
+        if (_sortType.Equals("Name"))
+        {
+            _repositories = _repositories.OrderByDescending(r => r.Name).ToList();
+        }
+        else if (_sortType.Equals("Stars"))
+        {
+            _repositories = _repositories.OrderByDescending(r => r.StargazersCount).ToList();
+        }
+        else if (_sortType.Equals("Issues"))
+        {
+            _repositories = _repositories.OrderByDescending(r => r.OpenIssues).ToList();
+        }
+        else if (_sortType.Equals("Activity"))
+        {
+            _repositories = _repositories.OrderByDescending(r => r.InnerSourceMetadata.Score).ToList();
+        }
+        else if (_sortType.Equals("Watchers"))
+        {
+            _repositories = _repositories.OrderByDescending(r => r.WatchersCount).ToList();
+        }
+        await InvokeAsync(StateHasChanged);
+    }
+
+}
