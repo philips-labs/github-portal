@@ -1,4 +1,4 @@
-## Github Innersource Portal
+## Github Portal
 Lists all InnerSource projects of Philips in an interactive and easy to use way. Can be used as a template for implementing the [InnerSource portal pattern](https://github.com/InnerSourceCommons/InnerSourcePatterns/blob/master/patterns/2-structured/innersource-portal.md) by the [InnerSource Commons community](http://innersourcecommons.org/).
 
 ## Inspiration
