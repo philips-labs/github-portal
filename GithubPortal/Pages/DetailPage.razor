@@ -1,0 +1,112 @@
+@using GithubPortal.Shared
+
+<Modal IsOpen="@_isModalOpen" HeaderClass="flex justify-between bg-blue-500 md:p-4 lg:p-6" FooterClass="bg-blue-500 cursor-pointer">
+        <Header>
+            @if (_selectedRepo != null)
+            {
+                <div class="flex justify-self-start">
+                    @_selectedRepo.Name
+                    <a href="@_selectedRepo.HtmlUrl" class="text-sm self-center text-blue-200 text-hover:underline">&nbsp - @_selectedRepo.FullName</a>
+                </div>
+            }
+            <button type="button" class="" @onclick="@CloseModal">&times;</button>
+        </Header>
+        <Body>
+            @if (_selectedRepo != null)
+            {
+                <div class="flex flex-col">
+                    <div class="mb-3">
+                        <span class="font-bold">
+                            Description:
+                        </span>
+                        <span>
+                            @_selectedRepo.Description
+                        </span>
+                    </div>
+                    <div class="mb-3">
+                        <span class="font-bold">
+                            Language:
+                        </span>
+                        <span>
+                            @_selectedRepo.Language
+                        </span>
+                    </div>
+                    <div class="mb-3">
+                        <span class="font-bold">
+                            Activity Score:
+                        </span>
+                        <span>
+                            <img src="@GetActivityLogoPath(_selectedRepo.InnerSourceMetadata.Score)"/>
+                            @_selectedRepo.InnerSourceMetadata.Score
+                        </span>
+                    </div>
+
+                    <div class="mb-3">
+                        <span class="font-bold">
+                            Stars:
+                        </span>
+                        <span>
+                            @_selectedRepo.StargazersCount
+                        </span>
+                    </div>
+
+                    <div class="mb-3">
+                        <span class="font-bold">
+                            Forks:
+                        </span>
+                        <span>
+                            @_selectedRepo.ForksCount
+                        </span>
+                    </div>
+
+                    <div class="mb-3">
+                        <span class="font-bold">
+                            Open Issues:
+                        </span>
+                        <span>
+                            @_selectedRepo.OpenIssuesCount
+                        </span>
+                    </div>
+
+                    <div class="mb-3">
+                        <span class="font-bold">
+                            Last Update:
+                        </span>
+                        <span>
+                            @_selectedRepo.UpdatedAt
+                        </span>
+                    </div>
+
+                    <div class="mb-3">
+                        <span class="font-bold">
+                            Created at:
+                        </span>
+                        <span>
+                            @_selectedRepo.CreatedAt
+                        </span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Topics:
+                    </span>
+                    @foreach (string topic in _selectedRepo.InnerSourceMetadata.Topics)
+                    {
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            @topic
+                        </span>
+                    }
+                </div>
+        }
+        </Body>
+        <Footer>
+            @if (_selectedRepo != null)
+            {
+                <a href="@_selectedRepo.HtmlUrl">
+                    <div class="my-3 text-blue-200 text-hover:underline">
+                        Contribute
+                    </div>
+                </a>
+            }
+        </Footer>
+    </Modal>

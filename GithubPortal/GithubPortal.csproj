@@ -6,6 +6,20 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Pages\OverviewPage - Copy - Copy.razor.cs" />
+    <Compile Remove="Pages\OverviewPage - Copy.razor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Pages\DetailPage.razor.cs" />
+    <Content Include="Pages\OverviewPage - Copy - Copy.razor.cs">
+      <DependentUpon>OverviewPage - Copy.razor.cs</DependentUpon>
+    </Content>
+    <Content Include="Pages\OverviewPage - Copy.razor.cs">
+      <DependentUpon>OverviewPage.razor.cs</DependentUpon>
+    </Content>
+    <Content Include="Pages\OverviewPage.razor.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.1" />

@@ -1,4 +1,4 @@
-﻿<div class="overlay fixed w-full h-screen bg-black bg-opacity-50 inset-x-0 top-0 z-10 flex items-center justify-center @(IsOpen ? "" : "hidden")" 
+﻿<div class="overlay fixed w-full h-screen bg-black bg-opacity-50 inset-x-0 top-0 z-10 flex items-center justify-center @(IsOpen ? "" : "hidden")"
      tabindex="0" @onclick="@PossiblyCloseModal">
     <div class="modal z-20 bg-white m-4 w-4/5 rounded-md shadow-lg absolute md:top-16 overflow-y-auto max-w-full @ModalClass"
          @onmouseover="MouseIn" @onmouseout="MouseOut">
@@ -24,55 +24,3 @@
         }
     </div>
 </div>
-
-@code {
-
-    [Parameter]
-    public RenderFragment Header { get; set; }
-
-    [Parameter]
-    public RenderFragment Body { get; set; }
-
-    [Parameter]
-    public RenderFragment Footer { get; set; }
-
-    [Parameter]
-    public bool IsOpen { get; set; } = true;
-
-    [Parameter]
-    public string ModalClass { get; set; }
-
-    [Parameter]
-    public string HeaderClass { get; set; }
-
-    [Parameter]
-    public string BodyClass { get; set; }
-
-    [Parameter]
-    public string FooterClass { get; set; }
-
-    public string ModelSize { get; set; }
-
-    public void CloseModal()
-    {
-        IsOpen = false;
-    }
-
-    private bool _isInside; 
-    private void PossiblyCloseModal()
-    {
-        if(!_isInside)
-        {
-            CloseModal();
-        }
-    }
-    private void MouseIn()
-    {
-        _isInside = true;
-    }
-
-    private void MouseOut()
-    {
-        _isInside = false;
-    }
-}
