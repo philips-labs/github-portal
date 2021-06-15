@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace GithubPortal.Models
+namespace Domain
 {
     public class Owner
     {

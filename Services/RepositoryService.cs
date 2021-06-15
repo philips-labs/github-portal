@@ -3,15 +3,10 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using GithubPortal.Models;
+using Domain;
 
-namespace GithubPortal.Services
+namespace Services
 {
-    public interface IRepositoryService
-    {
-        public Task<Repository[]> GetAllRepositories();
-        public Task<List<string>> GetAllLanguagesFromRepos(IEnumerable<Repository> repositories);
-    }
     public class RepositoryService : IRepositoryService
     {
         private readonly HttpClient _httpClient;
