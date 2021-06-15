@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
-namespace InnerSourcePortal.Models
+namespace GithubPortal.Models
 {
     public class Owner
     {
