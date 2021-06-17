@@ -69,11 +69,6 @@ namespace GithubPortal.Pages
             _selectedRepo = repo;
         }
 
-        private void CloseModal()
-        {
-            _isModalOpen = false;
-        }
-
         protected override async Task OnInitializedAsync()
         {
             _originalRepositories = await _repositoryService.GetAllRepositories().ConfigureAwait(false);
@@ -140,32 +135,6 @@ namespace GithubPortal.Pages
         {
             _repositories = await _repositoryService.SortRepository(_repositories, _sortType);
             await InvokeAsync(StateHasChanged);
-        }
-
-        private string GetActivityLogoPath(int activityScore)
-        {
-            if (activityScore > 2500)
-            {
-                return "/static/activity/level-5.png";
-            }
-            if (activityScore > 1000)
-            {
-                return "/static/activity/level-4.png";
-            }
-            if (activityScore > 300)
-            {
-                return "/static/activity/level-3.png";
-            }
-            if (activityScore > 150)
-            {
-                return "/static/activity/level-2.png";
-            }
-            if (activityScore > 50)
-            {
-                return "/static/activity/level-1.png";
-            }
-
-            return "/static/activity/level-0.png";
         }
     }
 }

@@ -1,4 +1,3 @@
-@using GithubPortal.Shared
 @using Microsoft.AspNetCore.Components
 @using Domain
 
@@ -11,7 +10,7 @@
 }
 else
 {
-    <DetailPage ></DetailPage>
+    <DetailPage SelectedRepo="_selectedRepo" IsModalOpen="_isModalOpen"></DetailPage>
     <div class="min-h-screen flex px-4">
         <div class='overflow-x-auto w-full'>
             <div class="flex justify-between">

@@ -1,18 +1,18 @@
 @using GithubPortal.Shared
 
-<Modal IsOpen="@_isModalOpen" HeaderClass="flex justify-between bg-blue-500 md:p-4 lg:p-6" FooterClass="bg-blue-500 cursor-pointer">
+<Modal IsOpen="@IsModalOpen" HeaderClass="flex justify-between bg-blue-500 md:p-4 lg:p-6" FooterClass="bg-blue-500 cursor-pointer">
         <Header>
-            @if (_selectedRepo != null)
+            @if (SelectedRepo != null)
             {
                 <div class="flex justify-self-start">
-                    @_selectedRepo.Name
-                    <a href="@_selectedRepo.HtmlUrl" class="text-sm self-center text-blue-200 text-hover:underline">&nbsp - @_selectedRepo.FullName</a>
+                    @SelectedRepo.Name
+                    <a href="@SelectedRepo.HtmlUrl" class="text-sm self-center text-blue-200 text-hover:underline">&nbsp - @SelectedRepo.FullName</a>
                 </div>
             }
             <button type="button" class="" @onclick="@CloseModal">&times;</button>
         </Header>
         <Body>
-            @if (_selectedRepo != null)
+            @if (SelectedRepo != null)
             {
                 <div class="flex flex-col">
                     <div class="mb-3">
@@ -20,7 +20,7 @@
                             Description:
                         </span>
                         <span>
-                            @_selectedRepo.Description
+                            @SelectedRepo.Description
                         </span>
                     </div>
                     <div class="mb-3">
@@ -28,7 +28,7 @@
                             Language:
                         </span>
                         <span>
-                            @_selectedRepo.Language
+                            @SelectedRepo.Language
                         </span>
                     </div>
                     <div class="mb-3">
@@ -36,8 +36,8 @@
                             Activity Score:
                         </span>
                         <span>
-                            <img src="@GetActivityLogoPath(_selectedRepo.InnerSourceMetadata.Score)"/>
-                            @_selectedRepo.InnerSourceMetadata.Score
+                            <img src="@GetActivityLogoPath(SelectedRepo.InnerSourceMetadata.Score)"/>
+                            @SelectedRepo.InnerSourceMetadata.Score
                         </span>
                     </div>
 
@@ -46,7 +46,7 @@
                             Stars:
                         </span>
                         <span>
-                            @_selectedRepo.StargazersCount
+                            @SelectedRepo.StargazersCount
                         </span>
                     </div>
 
@@ -55,7 +55,7 @@
                             Forks:
                         </span>
                         <span>
-                            @_selectedRepo.ForksCount
+                            @SelectedRepo.ForksCount
                         </span>
                     </div>
 
@@ -64,7 +64,7 @@
                             Open Issues:
                         </span>
                         <span>
-                            @_selectedRepo.OpenIssuesCount
+                            @SelectedRepo.OpenIssuesCount
                         </span>
                     </div>
 
@@ -73,7 +73,7 @@
                             Last Update:
                         </span>
                         <span>
-                            @_selectedRepo.UpdatedAt
+                            @SelectedRepo.UpdatedAt
                         </span>
                     </div>
 
@@ -82,7 +82,7 @@
                             Created at:
                         </span>
                         <span>
-                            @_selectedRepo.CreatedAt
+                            @SelectedRepo.CreatedAt
                         </span>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                     <span class="font-bold">
                         Topics:
                     </span>
-                    @foreach (string topic in _selectedRepo.InnerSourceMetadata.Topics)
+                    @foreach (string topic in SelectedRepo.InnerSourceMetadata.Topics)
                     {
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                             @topic
@@ -100,9 +100,9 @@
         }
         </Body>
         <Footer>
-            @if (_selectedRepo != null)
+            @if (SelectedRepo != null)
             {
-                <a href="@_selectedRepo.HtmlUrl">
+                <a href="@SelectedRepo.HtmlUrl">
                     <div class="my-3 text-blue-200 text-hover:underline">
                         Contribute
                     </div>
