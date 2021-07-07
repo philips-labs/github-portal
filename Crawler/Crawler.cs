@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Octokit;
@@ -11,21 +13,44 @@ using YamlDotNet.Serialization;
 
 namespace Crawler
 {
-    public class Crawler
+    public class Crawler : BackgroundService
     {
-        // TODO: Get this from configuration or env variable
-        private readonly string _metaDataFileName = "philips-repo.yaml";
-        private bool _yamlMode = true;
-        private readonly List<CrawlerRepositoryResult> crawlerRepositoryResults = new List<CrawlerRepositoryResult>();
+        private readonly string _metaDataFileName;
+        private readonly bool _yamlMode = true;
+        private readonly List<CrawlerRepositoryResult> _crawlerRepositoryResults = new List<CrawlerRepositoryResult>();
+        private GitHubClient Client { get; set; }
+        private readonly Config _config;
 
-        public Crawler(GitHubClient client)
+        public Crawler(Config config)
         {
-            // TODO: Retrieve token from Env variable or config file
-            client.Credentials = new Credentials("");
-            Client = client;
+            _config = config;
+            _metaDataFileName = _config.Self.MetaDataFileName;
+            _yamlMode = _config.Self.YamlMode;
+            PrepareGithubClient();
         }
 
-        private GitHubClient Client { get; }
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            try
+            {
+                await StartCrawler();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
+        }
+
+        private void PrepareGithubClient()
+        {
+            Client = new GitHubClient(new ProductHeaderValue("Github-Portal-Crawler"))
+            {
+                Credentials = new Credentials(_config.Self.GithubToken)
+            };
+        }
+
 
         /// <summary>
         ///     Initiates the crawler
@@ -34,8 +59,7 @@ namespace Crawler
         public async Task StartCrawler()
         {
             // Initialize a new instance of the SearchRepositoriesRequest class
-            // TODO: Make the organization configurable
-            SearchRepositoriesRequest request = new SearchRepositoriesRequest("org:philips-internal is:internal");
+            SearchRepositoriesRequest request = new SearchRepositoriesRequest($"org:{_config.Self.GithubOrganization} is:internal");
             SearchRepositoryResult result = await Client.Search.SearchRepo(request);
 
             foreach (Repository repo in result.Items)
@@ -52,7 +76,7 @@ namespace Crawler
                     new CrawlerRepositoryResult(repo, data, contributorFileUrl, weeklyRepoActivity);
                 // Repository score should always be done at the end to ensure all information is correct.
                 crawlerRepositoryResult.RepositoryScore = CalculateRepoScore(crawlerRepositoryResult);
-                crawlerRepositoryResults.Add(crawlerRepositoryResult);
+                _crawlerRepositoryResults.Add(crawlerRepositoryResult);
             }
 
             await WriteResultsToJsonFile();
@@ -172,7 +196,7 @@ namespace Crawler
         {
             await using StreamWriter file = File.CreateText("repos.json");
             JsonSerializer serializer = new JsonSerializer {Formatting = Formatting.Indented};
-            serializer.Serialize(file, crawlerRepositoryResults);
+            serializer.Serialize(file, _crawlerRepositoryResults);
         }
 
         /// <summary>
