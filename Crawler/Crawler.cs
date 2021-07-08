@@ -16,7 +16,7 @@ namespace Crawler
     public class Crawler : BackgroundService
     {
         private readonly string _metaDataFileName;
-        private readonly bool _yamlMode = true;
+        private readonly bool _yamlMode;
         private readonly List<CrawlerRepositoryResult> _crawlerRepositoryResults = new List<CrawlerRepositoryResult>();
         private GitHubClient Client { get; set; }
         private readonly Config _config;
@@ -61,23 +61,30 @@ namespace Crawler
             // Initialize a new instance of the SearchRepositoriesRequest class
             SearchRepositoriesRequest request = new SearchRepositoriesRequest($"org:{_config.Self.GithubOrganization} is:internal");
             SearchRepositoryResult result = await Client.Search.SearchRepo(request);
-
-            foreach (Repository repo in result.Items)
+            try
             {
-                dynamic data = await GetContentMetadataFile(repo);
+                foreach (Repository repo in result.Items)
+                {
+                    dynamic data = await GetContentMetadataFile(repo);
 
-                CommitActivity weeklyRepoActivity = await FetchWeeklyRepoActivity(repo);
-                string contributorFileUrl = await GetContributorFileUrl(repo.FullName);
+                    CommitActivity weeklyRepoActivity = await FetchWeeklyRepoActivity(repo);
+                    string contributorFileUrl = await GetContributorFileUrl(repo.FullName);
 
 
-                // TODO: Get repository topics when new version is released (OctoKit) - or manually REST call
+                    // TODO: Get repository topics when new version is released (OctoKit) - or manually REST call
 
-                CrawlerRepositoryResult crawlerRepositoryResult =
-                    new CrawlerRepositoryResult(repo, data, contributorFileUrl, weeklyRepoActivity);
-                // Repository score should always be done at the end to ensure all information is correct.
-                crawlerRepositoryResult.RepositoryScore = CalculateRepoScore(crawlerRepositoryResult);
-                _crawlerRepositoryResults.Add(crawlerRepositoryResult);
+                    CrawlerRepositoryResult crawlerRepositoryResult =
+                        new CrawlerRepositoryResult(repo, data, contributorFileUrl, weeklyRepoActivity);
+                    // Repository score should always be done at the end to ensure all information is correct.
+                    crawlerRepositoryResult.RepositoryScore = CalculateRepoScore(crawlerRepositoryResult);
+                    _crawlerRepositoryResults.Add(crawlerRepositoryResult);
+                }
             }
+            catch (RateLimitExceededException e)
+            {
+                Console.WriteLine(e);
+            }
+
 
             await WriteResultsToJsonFile();
         }

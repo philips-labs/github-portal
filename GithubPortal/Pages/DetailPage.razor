@@ -5,8 +5,8 @@
             @if (SelectedRepo != null)
             {
                 <div class="flex justify-self-start">
-                    @SelectedRepo.Name
-                    <a href="@SelectedRepo.HtmlUrl" class="text-sm self-center text-blue-200 text-hover:underline">&nbsp - @SelectedRepo.FullName</a>
+                    @SelectedRepo.Repository.Name
+                    <a href="@SelectedRepo.Repository.HtmlUrl" class="text-sm self-center text-blue-200 text-hover:underline">&nbsp - @SelectedRepo.Repository.FullName</a>
                 </div>
             }
             <button type="button" class="" @onclick="@CloseModal">&times;</button>
@@ -20,7 +20,7 @@
                             Description:
                         </span>
                         <span>
-                            @SelectedRepo.Description
+                            @SelectedRepo.Repository.Description
                         </span>
                     </div>
                     <div class="mb-3">
@@ -28,7 +28,7 @@
                             Language:
                         </span>
                         <span>
-                            @SelectedRepo.Language
+                            @SelectedRepo.Repository.Language
                         </span>
                     </div>
                     <div class="mb-3">
@@ -36,8 +36,8 @@
                             Activity Score:
                         </span>
                         <span>
-                            <img src="@GetActivityLogoPath(SelectedRepo.InnerSourceMetadata.Score)"/>
-                            @SelectedRepo.InnerSourceMetadata.Score
+                            <img src="@GetActivityLogoPath(SelectedRepo.RepositoryScore)"/>
+                            @SelectedRepo.RepositoryScore
                         </span>
                     </div>
 
@@ -46,7 +46,7 @@
                             Stars:
                         </span>
                         <span>
-                            @SelectedRepo.StargazersCount
+                            @SelectedRepo.Repository.StargazersCount
                         </span>
                     </div>
 
@@ -55,7 +55,7 @@
                             Forks:
                         </span>
                         <span>
-                            @SelectedRepo.ForksCount
+                            @SelectedRepo.Repository.ForksCount
                         </span>
                     </div>
 
@@ -64,7 +64,7 @@
                             Open Issues:
                         </span>
                         <span>
-                            @SelectedRepo.OpenIssuesCount
+                            @SelectedRepo.Repository.OpenIssuesCount
                         </span>
                     </div>
 
@@ -73,7 +73,7 @@
                             Last Update:
                         </span>
                         <span>
-                            @SelectedRepo.UpdatedAt
+                            @SelectedRepo.Repository.UpdatedAt
                         </span>
                     </div>
 
@@ -82,7 +82,7 @@
                             Created at:
                         </span>
                         <span>
-                            @SelectedRepo.CreatedAt
+                            @SelectedRepo.Repository.CreatedAt
                         </span>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                     <span class="font-bold">
                         Topics:
                     </span>
-                    @foreach (string topic in SelectedRepo.InnerSourceMetadata.Topics)
+                    @foreach (string topic in TopicList)
                     {
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                             @topic
@@ -102,7 +102,7 @@
         <Footer>
             @if (SelectedRepo != null)
             {
-                <a href="@SelectedRepo.HtmlUrl">
+                <a href="@SelectedRepo.Repository.HtmlUrl">
                     <div class="my-3 text-blue-200 text-hover:underline">
                         Contribute
                     </div>

@@ -11,11 +11,11 @@ namespace GithubPortal.Pages
     {
         [Inject]
         private IRepositoryService _repositoryService { get; set; }
-        private List<Repository> _repositories;
-        private IEnumerable<Repository> _originalRepositories;
+        private List<CrawlerResult> _repositories;
+        private IEnumerable<CrawlerResult> _originalRepositories;
         private List<string> _languages;
         private bool _isModalOpen;
-        private Repository _selectedRepo;
+        private CrawlerResult _selectedRepo;
         private string _text;
         private bool _queued;
         private bool _loading;
@@ -63,7 +63,7 @@ namespace GithubPortal.Pages
             }
         }
 
-        private void ShowDetailedRepositoryModal(Repository repo)
+        private void ShowDetailedRepositoryModal(CrawlerResult repo)
         {
             _isModalOpen = true;
             _selectedRepo = repo;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Domain;
 using Microsoft.AspNetCore.Components;
 
@@ -8,7 +9,14 @@ namespace GithubPortal.Pages
         [Parameter]
         public bool IsModalOpen { get; set; }
         [Parameter]
-        public Repository SelectedRepo { get; set; }
+        public CrawlerResult SelectedRepo { get; set; }
+
+        public List<string> TopicList = new List<string>
+        {
+            "innersource",
+            "philips",
+            "xrDLS"
+        };
 
         private void CloseModal()
         {
