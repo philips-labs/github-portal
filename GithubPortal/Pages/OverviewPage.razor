@@ -47,6 +47,18 @@ else
                         }
                     </select>
                 </div>
+                <div class="flex flex-col justify-center flex-1">
+                    <label for="sort">Business Category:</label>
+                    <select @bind="BusinessCategory" id="businessCategory" class="border-solid border-1 border-blue-300 hover:border-2 hover:border-blue-500">
+                        @if (_businessCategories != null)
+                        {
+                            @foreach (string category in _businessCategories)
+                            {
+                                <option value="@category">@category</option>
+                            }
+                        }
+                    </select>
+                </div>
 
             </div>
             <table class='mx-auto max-w-screen-2xl w-full rounded-lg bg-white divide-y divide-gray-300'>

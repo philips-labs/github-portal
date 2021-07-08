@@ -14,78 +14,89 @@
         <Body>
             @if (SelectedRepo != null)
             {
-                <div class="flex flex-col">
-                    <div class="mb-3">
-                        <span class="font-bold">
-                            Description:
-                        </span>
-                        <span>
-                            @SelectedRepo.Repository.Description
-                        </span>
-                    </div>
-                    <div class="mb-3">
-                        <span class="font-bold">
-                            Language:
-                        </span>
-                        <span>
-                            @SelectedRepo.Repository.Language
-                        </span>
-                    </div>
-                    <div class="mb-3">
-                        <span class="font-bold">
-                            Activity Score:
-                        </span>
-                        <span>
-                            <img src="@GetActivityLogoPath(SelectedRepo.RepositoryScore)"/>
-                            @SelectedRepo.RepositoryScore
-                        </span>
-                    </div>
-
-                    <div class="mb-3">
-                        <span class="font-bold">
-                            Stars:
-                        </span>
-                        <span>
-                            @SelectedRepo.Repository.StargazersCount
-                        </span>
-                    </div>
-
-                    <div class="mb-3">
-                        <span class="font-bold">
-                            Forks:
-                        </span>
-                        <span>
-                            @SelectedRepo.Repository.ForksCount
-                        </span>
-                    </div>
-
-                    <div class="mb-3">
-                        <span class="font-bold">
-                            Open Issues:
-                        </span>
-                        <span>
-                            @SelectedRepo.Repository.OpenIssuesCount
-                        </span>
-                    </div>
-
-                    <div class="mb-3">
-                        <span class="font-bold">
-                            Last Update:
-                        </span>
-                        <span>
-                            @SelectedRepo.Repository.UpdatedAt
-                        </span>
-                    </div>
-
-                    <div class="mb-3">
-                        <span class="font-bold">
-                            Created at:
-                        </span>
-                        <span>
-                            @SelectedRepo.Repository.CreatedAt
-                        </span>
-                    </div>
+            <div class="flex flex-col">
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Description:
+                    </span>
+                    <span>
+                        @SelectedRepo.Repository.Description
+                    </span>
                 </div>
+                @if (SelectedRepo.MetaData != null && !string.IsNullOrEmpty(SelectedRepo.MetaData.BusinessCategory) && !string.IsNullOrEmpty(SelectedRepo.MetaData.BusinessCategoryDetails))
+                {
+                    <div class="mb-3">
+                        <span class="font-bold">
+                            Business Category:
+                        </span>
+                        <span>
+                            <a href="@SelectedRepo.MetaData.BusinessCategoryDetails">@SelectedRepo.MetaData.BusinessCategory</a>
+                        </span>
+                    </div>
+                }
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Language:
+                    </span>
+                    <span>
+                        @SelectedRepo.Repository.Language
+                    </span>
+                </div>
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Activity Score:
+                    </span>
+                    <span>
+                        <img src="@GetActivityLogoPath(SelectedRepo.RepositoryScore)" />
+                        @SelectedRepo.RepositoryScore
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Stars:
+                    </span>
+                    <span>
+                        @SelectedRepo.Repository.StargazersCount
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Forks:
+                    </span>
+                    <span>
+                        @SelectedRepo.Repository.ForksCount
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Open Issues:
+                    </span>
+                    <span>
+                        @SelectedRepo.Repository.OpenIssuesCount
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Last Update:
+                    </span>
+                    <span>
+                        @SelectedRepo.Repository.UpdatedAt
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Created at:
+                    </span>
+                    <span>
+                        @SelectedRepo.Repository.CreatedAt
+                    </span>
+                </div>
+            </div>
                 <div class="mb-3">
                     <span class="font-bold">
                         Topics:

@@ -35,6 +35,17 @@ namespace Services
         }
 
         /// <summary>
+        /// Retrieves all business categories from the crawler results.
+        /// </summary>
+        /// <param name="repoCrawlerResults"></param>
+        /// <returns>List of business categories</returns>
+        public async Task<List<string>> GetAllBusinessCategories(IEnumerable<CrawlerResult> repoCrawlerResults)
+        {
+            return repoCrawlerResults.Select(repo => repo.MetaData?.BusinessCategory)
+                .Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList();
+        }
+
+        /// <summary>
         /// Filter a list of repositories based on string
         /// </summary>
         /// <param name="repositories">List of repositories to perform the search on</param>
@@ -62,6 +73,11 @@ namespace Services
         public async Task<List<CrawlerResult>> FilterRepositoryOnLanguage(IEnumerable<CrawlerResult> repositories, string languageToMatch)
         {
             return repositories.Where(r => r.Repository.Language != null && r.Repository.Language.ToLowerInvariant().Contains(languageToMatch.ToLowerInvariant())).ToList();
+        }
+
+        public async Task<List<CrawlerResult>> SortOnBusinessCategory(IEnumerable<CrawlerResult> repositories, string businessCategory)
+        {
+            return repositories.Where(r => r.MetaData?.BusinessCategory == businessCategory).ToList();
         }
 
         /// <summary>

@@ -13,5 +13,9 @@ namespace Services
         public Task<List<CrawlerResult>> FilterRepositoryOnString(IEnumerable<CrawlerResult> repositories, string textToSearch);
         public Task<List<CrawlerResult>> FilterRepositoryOnLanguage(IEnumerable<CrawlerResult> repositories, string languageToMatch);
         public Task<List<CrawlerResult>> SortRepository(IEnumerable<CrawlerResult> repositories, string sortType);
+
+        public Task<List<CrawlerResult>> SortOnBusinessCategory(IEnumerable<CrawlerResult> repositories,
+            string businessCategory);
+        public Task<List<string>> GetAllBusinessCategories(IEnumerable<CrawlerResult> repoCrawlerResults);
     }
 }

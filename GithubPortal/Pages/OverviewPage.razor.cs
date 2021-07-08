@@ -21,6 +21,7 @@ namespace GithubPortal.Pages
         private bool _loading;
         private int _totalItems;
         private int _totalRepoCount;
+        private List<string> _businessCategories;
 
         private List<string>
             _sortTypes = new List<string>
@@ -43,6 +44,21 @@ namespace GithubPortal.Pages
                 {
                     _sortType = value;
                     InvokeAsync(LoadRepositoriesBasedOnSortType);
+                }
+            }
+        }
+
+        private string _businessCategory;
+
+        private string BusinessCategory
+        {
+            get => _businessCategory;
+            set
+            {
+                if (value != _businessCategory)
+                {
+                    _businessCategory = value;
+                    InvokeAsync(LoadRepositoriesBasedOnBusinessCategory);
                 }
             }
         }
@@ -74,6 +90,9 @@ namespace GithubPortal.Pages
             _originalRepositories = await _repositoryService.GetAllRepositories().ConfigureAwait(false);
             _repositories = _originalRepositories.ToList();
             _languages = await _repositoryService.GetAllLanguagesFromRepos(_repositories).ConfigureAwait(false);
+            _businessCategories =
+                await _repositoryService.GetAllBusinessCategories(_repositories).ConfigureAwait(false);
+            _businessCategories.Insert(0, "--Select Category--");
             _totalRepoCount = _originalRepositories.Count();
         }
 
@@ -113,7 +132,7 @@ namespace GithubPortal.Pages
                     string textToSearch = _text.ToLowerInvariant();
                     _loading = true;
                     _queued = false;
-                    _repositories = await _repositoryService.FilterRepositoryOnString(_repositories, textToSearch);
+                    _repositories = await _repositoryService.FilterRepositoryOnString(_originalRepositories, textToSearch);
                     _totalItems = _repositories.Count;
                     _loading = false;
                 } while (_queued);
@@ -127,13 +146,27 @@ namespace GithubPortal.Pages
 
         private async Task LoadRepositoriesForSpecificLanguageAsync()
         {
-            _repositories = await _repositoryService.FilterRepositoryOnLanguage(_repositories, _selectedLanguage);
+            _repositories = await _repositoryService.FilterRepositoryOnLanguage(_originalRepositories, _selectedLanguage);
             await InvokeAsync(StateHasChanged);
         }
 
         private async Task LoadRepositoriesBasedOnSortType()
         {
-            _repositories = await _repositoryService.SortRepository(_repositories, _sortType);
+            _repositories = await _repositoryService.SortRepository((_originalRepositories), _sortType);
+            await InvokeAsync(StateHasChanged);
+        }
+
+        private async Task LoadRepositoriesBasedOnBusinessCategory()
+        {
+            if (_businessCategory.Equals("--Select Category--"))
+            {
+                _repositories = _originalRepositories.ToList();
+            }
+            else
+            {
+                _repositories = await _repositoryService.SortOnBusinessCategory((_originalRepositories), _businessCategory);
+
+            }
             await InvokeAsync(StateHasChanged);
         }
     }
