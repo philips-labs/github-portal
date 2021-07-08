@@ -93,6 +93,7 @@ namespace GithubPortal.Pages
             _businessCategories =
                 await _repositoryService.GetAllBusinessCategories(_repositories).ConfigureAwait(false);
             _businessCategories.Insert(0, "--Select Category--");
+            _languages.Insert(0, "--Select Language--");
             _totalRepoCount = _originalRepositories.Count();
         }
 
@@ -146,7 +147,14 @@ namespace GithubPortal.Pages
 
         private async Task LoadRepositoriesForSpecificLanguageAsync()
         {
-            _repositories = await _repositoryService.FilterRepositoryOnLanguage(_originalRepositories, _selectedLanguage);
+            if (_selectedLanguage.Equals("--Select Language--"))
+            {
+                _repositories = _originalRepositories.ToList();
+            }
+            else
+            {
+                _repositories = await _repositoryService.FilterRepositoryOnLanguage(_originalRepositories, _selectedLanguage);
+            }
             await InvokeAsync(StateHasChanged);
         }
 
