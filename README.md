@@ -19,6 +19,20 @@ Functional Portal.
 * .NET Core 3.1
 * [TailwindCSS](https://tailwindcss.com/)
 
+## Pros vs Cons
+Learn more about the pros and cons of using this project.
+
+#### Pros
+- Improved performance with large repository count
+- Built with modern frameworks like TailwindCSS and Blazor that compiles to WebAssembly.
+- Improved search functionality that allows you to search on topics, description, name, url, etc.
+- Easier to maintain due to seperated responsibilities.
+- Built to scale.
+
+#### Cons
+- Poor styling of the portal.
+- Philips specific styling(will need brief restyle).
+
 ## Crawler
 The crawler is based on the InnerSource Crawler on Philips-forks. This one is built with C# and runs as a console application. It's configurable to an extend. Configuration options are discussed in detail below.
 
