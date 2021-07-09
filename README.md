@@ -29,3 +29,12 @@ Available environment variables are:
 | App__Self__YamlMode | Is the meta data file a YAML/YML file or is it a JSON? If Yaml, true, if JSON, false | true
 | App__Self__DatabaseMode | Do you want to output the default repos.json or output to a database? | false
 | App__Self__GithubOrganization | Name of the Github Organization to query | philips-internal
+
+
+## Portal
+The portal itself is functional, but still under development. Work is being done to make it compatible with pulling data from a REST API instead of from the repos.json. 
+The repos.json will still be the default behavior, but the REST API will be the recommended way as it is more performant and scalable.
+
+
+### Screenshots
+Screenshots of the portal will soon be available.
