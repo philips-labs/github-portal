@@ -1,0 +1,123 @@
+@using GithubPortal.Shared
+
+<Modal IsOpen="@IsModalOpen" HeaderClass="flex justify-between bg-blue-500 md:p-4 lg:p-6" FooterClass="bg-blue-500 cursor-pointer">
+        <Header>
+            @if (SelectedRepo != null)
+            {
+                <div class="flex justify-self-start">
+                    @SelectedRepo.Repository.Name
+                    <a href="@SelectedRepo.Repository.HtmlUrl" class="text-sm self-center text-blue-200 text-hover:underline">&nbsp - @SelectedRepo.Repository.FullName</a>
+                </div>
+            }
+            <button type="button" class="" @onclick="@CloseModal">&times;</button>
+        </Header>
+        <Body>
+            @if (SelectedRepo != null)
+            {
+            <div class="flex flex-col">
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Description:
+                    </span>
+                    <span>
+                        @SelectedRepo.Repository.Description
+                    </span>
+                </div>
+                @if (SelectedRepo.MetaData != null && !string.IsNullOrEmpty(SelectedRepo.MetaData.BusinessCategory) && !string.IsNullOrEmpty(SelectedRepo.MetaData.BusinessCategoryDetails))
+                {
+                    <div class="mb-3">
+                        <span class="font-bold">
+                            Business Category:
+                        </span>
+                        <span>
+                            <a href="@SelectedRepo.MetaData.BusinessCategoryDetails">@SelectedRepo.MetaData.BusinessCategory</a>
+                        </span>
+                    </div>
+                }
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Language:
+                    </span>
+                    <span>
+                        @SelectedRepo.Repository.Language
+                    </span>
+                </div>
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Activity Score:
+                    </span>
+                    <span>
+                        <img src="@GetActivityLogoPath(SelectedRepo.RepositoryScore)" />
+                        @SelectedRepo.RepositoryScore
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Stars:
+                    </span>
+                    <span>
+                        @SelectedRepo.Repository.StargazersCount
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Forks:
+                    </span>
+                    <span>
+                        @SelectedRepo.Repository.ForksCount
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Open Issues:
+                    </span>
+                    <span>
+                        @SelectedRepo.Repository.OpenIssuesCount
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Last Update:
+                    </span>
+                    <span>
+                        @SelectedRepo.Repository.UpdatedAt
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Created at:
+                    </span>
+                    <span>
+                        @SelectedRepo.Repository.CreatedAt
+                    </span>
+                </div>
+            </div>
+                <div class="mb-3">
+                    <span class="font-bold">
+                        Topics:
+                    </span>
+                    @foreach (string topic in TopicList)
+                    {
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            @topic
+                        </span>
+                    }
+                </div>
+        }
+        </Body>
+        <Footer>
+            @if (SelectedRepo != null)
+            {
+                <a href="@SelectedRepo.Repository.HtmlUrl">
+                    <div class="my-3 text-blue-200 text-hover:underline">
+                        Contribute
+                    </div>
+                </a>
+            }
+        </Footer>
+    </Modal>
