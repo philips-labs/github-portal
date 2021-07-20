@@ -4,102 +4,6 @@ using System.Text.Json.Serialization;
 
 namespace Domain
 {
-    public class Owner
-    {
-        [JsonPropertyName("Permissions")]
-        public object Permissions { get; set; }
-
-        [JsonPropertyName("SiteAdmin")]
-        public bool SiteAdmin { get; set; }
-
-        [JsonPropertyName("SuspendedAt")]
-        public object SuspendedAt { get; set; }
-
-        [JsonPropertyName("Suspended")]
-        public bool Suspended { get; set; }
-
-        [JsonPropertyName("LdapDistinguishedName")]
-        public object LdapDistinguishedName { get; set; }
-
-        [JsonPropertyName("UpdatedAt")]
-        public DateTime UpdatedAt { get; set; }
-
-        [JsonPropertyName("AvatarUrl")]
-        public string AvatarUrl { get; set; }
-
-        [JsonPropertyName("Bio")]
-        public object Bio { get; set; }
-
-        [JsonPropertyName("Blog")]
-        public object Blog { get; set; }
-
-        [JsonPropertyName("Collaborators")]
-        public object Collaborators { get; set; }
-
-        [JsonPropertyName("Company")]
-        public object Company { get; set; }
-
-        [JsonPropertyName("CreatedAt")]
-        public DateTime CreatedAt { get; set; }
-
-        [JsonPropertyName("DiskUsage")]
-        public object DiskUsage { get; set; }
-
-        [JsonPropertyName("Email")]
-        public object Email { get; set; }
-
-        [JsonPropertyName("Followers")]
-        public int Followers { get; set; }
-
-        [JsonPropertyName("Following")]
-        public int Following { get; set; }
-
-        [JsonPropertyName("Hireable")]
-        public object Hireable { get; set; }
-
-        [JsonPropertyName("HtmlUrl")]
-        public string HtmlUrl { get; set; }
-
-        [JsonPropertyName("Id")]
-        public int Id { get; set; }
-
-        [JsonPropertyName("NodeId")]
-        public string NodeId { get; set; }
-
-        [JsonPropertyName("Location")]
-        public object Location { get; set; }
-
-        [JsonPropertyName("Login")]
-        public string Login { get; set; }
-
-        [JsonPropertyName("Name")]
-        public object Name { get; set; }
-
-        [JsonPropertyName("Type")]
-        public int Type { get; set; }
-
-        [JsonPropertyName("OwnedPrivateRepos")]
-        public int OwnedPrivateRepos { get; set; }
-
-        [JsonPropertyName("Plan")]
-        public object Plan { get; set; }
-
-        [JsonPropertyName("PrivateGists")]
-        public object PrivateGists { get; set; }
-
-        [JsonPropertyName("PublicGists")]
-        public int PublicGists { get; set; }
-
-        [JsonPropertyName("PublicRepos")]
-        public int PublicRepos { get; set; }
-
-        [JsonPropertyName("TotalPrivateRepos")]
-        public int TotalPrivateRepos { get; set; }
-
-        [JsonPropertyName("Url")]
-        public string Url { get; set; }
-    }
-
     public class Permissions
     {
         [JsonPropertyName("Admin")]
@@ -161,9 +65,6 @@ namespace Domain
 
         [JsonPropertyName("NodeId")]
         public string NodeId { get; set; }
-
-        [JsonPropertyName("Owner")]
-        public Owner Owner { get; set; }
 
         [JsonPropertyName("Name")]
         public string Name { get; set; }
@@ -260,6 +161,9 @@ namespace Domain
 
         [JsonPropertyName("Visibility")]
         public object Visibility { get; set; }
+
+        [JsonPropertyName("Topics")]
+        public List<string> Topics { get; set; }
     }
 
     public class MetaData
@@ -291,6 +195,7 @@ namespace Domain
         [JsonPropertyName("Activity")]
         public List<Activity> Activity { get; set; }
     }
+
 
     public class CrawlerResult
     {
