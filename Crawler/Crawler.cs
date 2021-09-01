@@ -28,7 +28,11 @@ namespace Crawler
             _yamlMode = _config.Self.YamlMode;
             PrepareGithubClient();
         }
-
+        /// <summary>
+        /// Method that is executed when the background service is started
+        /// </summary>
+        /// <param name="stoppingToken"></param>
+        /// <returns></returns>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             try
@@ -40,9 +44,11 @@ namespace Crawler
                 Console.WriteLine(e);
                 throw;
             }
-            
         }
 
+        /// <summary>
+        /// Set up the Github Client with correct configuration
+        /// </summary>
         private void PrepareGithubClient()
         {
             Client = new GitHubClient(new ProductHeaderValue("Github-Portal-Crawler"))
@@ -75,6 +81,7 @@ namespace Crawler
 
                     CrawlerRepositoryResult crawlerRepositoryResult =
                         new CrawlerRepositoryResult(repo, data, contributorFileUrl, weeklyRepoActivity);
+
                     // Repository score should always be done at the end to ensure all information is correct.
                     crawlerRepositoryResult.RepositoryScore = CalculateRepoScore(crawlerRepositoryResult);
                     _crawlerRepositoryResults.Add(crawlerRepositoryResult);
@@ -83,6 +90,7 @@ namespace Crawler
             catch (RateLimitExceededException e)
             {
                 Console.WriteLine(e);
+                // TODO: Do something to counter ratelimits, like a short sleep.
             }
 
 
