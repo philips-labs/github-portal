@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,13 +22,14 @@ namespace GithubPortal.Pages
         private bool _loading;
         private int _totalItems;
         private int _totalRepoCount;
-        private List<string> _businessCategories;
+        // TODO: Add Missing Metadata Implementation
+        // private List<string> _businessCategories;
 
         private List<string>
             _sortTypes = new List<string>
                 {
                     "Name",
-                    "Activity",
+                    // "Activity",
                     "Stars",
                     "Watchers",
                     "Issues"
@@ -48,20 +50,22 @@ namespace GithubPortal.Pages
             }
         }
 
-        private string _businessCategory;
+        // TODO: Add Missing Metadata Implementation
+        // private string _businessCategory;
 
-        private string BusinessCategory
-        {
-            get => _businessCategory;
-            set
-            {
-                if (value != _businessCategory)
-                {
-                    _businessCategory = value;
-                    InvokeAsync(LoadRepositoriesBasedOnBusinessCategory);
-                }
-            }
-        }
+        // TODO: Add Missing Metadata Implementation
+        // private string BusinessCategory
+        // {
+        //     get => _businessCategory;
+        //     set
+        //     {
+        //         if (value != _businessCategory)
+        //         {
+        //             _businessCategory = value;
+        //             InvokeAsync(LoadRepositoriesBasedOnBusinessCategory);
+        //         }
+        //     }
+        // }
 
 
         private string _selectedLanguage;
@@ -87,12 +91,14 @@ namespace GithubPortal.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            // _originalRepositories = await _httpClient.GetFromJsonAsync<CrawlerResult[]>("inner-source/repositories?format=full");
             _originalRepositories = await _repositoryService.GetAllRepositories().ConfigureAwait(false);
             _repositories = _originalRepositories.ToList();
             _languages = await _repositoryService.GetAllLanguagesFromRepos(_repositories).ConfigureAwait(false);
-            _businessCategories =
-                await _repositoryService.GetAllBusinessCategories(_repositories).ConfigureAwait(false);
-            _businessCategories.Insert(0, "--Select Category--");
+            // TODO: Add Missing Metadata Implementation 
+            // _businessCategories =
+            //     await _repositoryService.GetAllBusinessCategories(_repositories).ConfigureAwait(false);
+            // _businessCategories.Insert(0, "--Select Category--");
             _languages.Insert(0, "--Select Language--");
             _totalRepoCount = _originalRepositories.Count();
         }
@@ -164,18 +170,19 @@ namespace GithubPortal.Pages
             await InvokeAsync(StateHasChanged);
         }
 
-        private async Task LoadRepositoriesBasedOnBusinessCategory()
-        {
-            if (_businessCategory.Equals("--Select Category--"))
-            {
-                _repositories = _originalRepositories.ToList();
-            }
-            else
-            {
-                _repositories = await _repositoryService.SortOnBusinessCategory((_originalRepositories), _businessCategory);
-
-            }
-            await InvokeAsync(StateHasChanged);
-        }
+        // TODO: Add Missing Metadata Implementation
+        // private async Task LoadRepositoriesBasedOnBusinessCategory()
+        // {
+        //     if (_businessCategory.Equals("--Select Category--"))
+        //     {
+        //         _repositories = _originalRepositories.ToList();
+        //     }
+        //     else
+        //     {
+        //         _repositories = await _repositoryService.SortOnBusinessCategory((_originalRepositories), _businessCategory);
+        //
+        //     }
+        //     await InvokeAsync(StateHasChanged);
+        // }
     }
 }

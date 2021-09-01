@@ -5,8 +5,8 @@
             @if (SelectedRepo != null)
             {
                 <div class="flex justify-self-start">
-                    @SelectedRepo.Repository.Name
-                    <a href="@SelectedRepo.Repository.HtmlUrl" class="text-sm self-center text-blue-200 text-hover:underline">&nbsp - @SelectedRepo.Repository.FullName</a>
+                    @SelectedRepo.Name
+                    <a href="@SelectedRepo.HtmlUrl" class="text-sm self-center text-blue-200 text-hover:underline">&nbsp - @SelectedRepo.FullName</a>
                 </div>
             }
             <button type="button" class="" @onclick="@CloseModal">&times;</button>
@@ -20,26 +20,27 @@
                         Description:
                     </span>
                     <span>
-                        @SelectedRepo.Repository.Description
+                        @SelectedRepo.Description
                     </span>
                 </div>
-                @if (SelectedRepo.MetaData != null && !string.IsNullOrEmpty(SelectedRepo.MetaData.BusinessCategory) && !string.IsNullOrEmpty(SelectedRepo.MetaData.BusinessCategoryDetails))
-                {
-                    <div class="mb-3">
-                        <span class="font-bold">
-                            Business Category:
-                        </span>
-                        <span>
-                            <a href="@SelectedRepo.MetaData.BusinessCategoryDetails">@SelectedRepo.MetaData.BusinessCategory</a>
-                        </span>
-                    </div>
-                }
+                @*TODO: Add Missing Metadata Implementation*@
+                @* @if (SelectedRepo.MetaData != null && !string.IsNullOrEmpty(SelectedRepo.MetaData.BusinessCategory) && !string.IsNullOrEmpty(SelectedRepo.MetaData.BusinessCategoryDetails)) *@
+                @* { *@
+                @*     <div class="mb-3"> *@
+                @*         <span class="font-bold"> *@
+                @*             Business Category: *@
+                @*         </span> *@
+                @*         <span> *@
+                @*             <a href="@SelectedRepo.MetaData.BusinessCategoryDetails">@SelectedRepo.MetaData.BusinessCategory</a> *@
+                @*         </span> *@
+                @*     </div> *@
+                @* } *@
                 <div class="mb-3">
                     <span class="font-bold">
                         Language:
                     </span>
                     <span>
-                        @SelectedRepo.Repository.Language
+                        @SelectedRepo.Language
                     </span>
                 </div>
                 <div class="mb-3">
@@ -47,8 +48,9 @@
                         Activity Score:
                     </span>
                     <span>
-                        <img src="@GetActivityLogoPath(SelectedRepo.RepositoryScore)" />
-                        @SelectedRepo.RepositoryScore
+                        @*TODO: Add Missing Repository Score Implementation*@
+                        @* <img src="@GetActivityLogoPath(SelectedRepo.RepositoryScore)" /> *@
+                        @* @SelectedRepo.RepositoryScore *@
                     </span>
                 </div>
 
@@ -57,7 +59,7 @@
                         Stars:
                     </span>
                     <span>
-                        @SelectedRepo.Repository.StargazersCount
+                        @SelectedRepo.StargazersCount
                     </span>
                 </div>
 
@@ -66,7 +68,7 @@
                         Forks:
                     </span>
                     <span>
-                        @SelectedRepo.Repository.ForksCount
+                        @SelectedRepo.ForksCount
                     </span>
                 </div>
 
@@ -75,7 +77,7 @@
                         Open Issues:
                     </span>
                     <span>
-                        @SelectedRepo.Repository.OpenIssuesCount
+                        @SelectedRepo.OpenIssuesCount
                     </span>
                 </div>
 
@@ -84,7 +86,7 @@
                         Last Update:
                     </span>
                     <span>
-                        @SelectedRepo.Repository.UpdatedAt
+                        @SelectedRepo.UpdatedAt
                     </span>
                 </div>
 
@@ -93,27 +95,27 @@
                         Created at:
                     </span>
                     <span>
-                        @SelectedRepo.Repository.CreatedAt
+                        @SelectedRepo.CreatedAt
                     </span>
                 </div>
             </div>
-                <div class="mb-3">
-                    <span class="font-bold">
-                        Topics:
-                    </span>
-                    @foreach (string topic in TopicList)
-                    {
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            @topic
-                        </span>
-                    }
-                </div>
+            <div class="mb-3">
+                <span class="font-bold">
+                    Topics:
+                </span>
+                @*TODO: Add Missing Topics Implementation*@
+                @foreach (string topic in TopicList)
+                {
+            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                @topic
+            </span>                    }
+            </div>
         }
         </Body>
         <Footer>
             @if (SelectedRepo != null)
             {
-                <a href="@SelectedRepo.Repository.HtmlUrl">
+                <a href="@SelectedRepo.HtmlUrl">
                     <div class="my-3 text-blue-200 text-hover:underline">
                         Contribute
                     </div>

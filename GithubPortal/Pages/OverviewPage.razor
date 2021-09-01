@@ -47,18 +47,19 @@ else
                         }
                     </select>
                 </div>
-                <div class="flex flex-col justify-center flex-1">
-                    <label for="sort">Business Category:</label>
-                    <select @bind="BusinessCategory" id="businessCategory" class="border-solid border-1 border-blue-300 hover:border-2 hover:border-blue-500">
-                        @if (_businessCategories != null)
-                        {
-                            @foreach (string category in _businessCategories)
-                            {
-                                <option value="@category">@category</option>
-                            }
-                        }
-                    </select>
-                </div>
+                @* TODO: Add Missing Metadata Implementation
+                @* <div class="flex flex-col justify-center flex-1"> *@
+                @*     <label for="sort">Business Category:</label> *@
+                @*     <select @bind="BusinessCategory" id="businessCategory" class="border-solid border-1 border-blue-300 hover:border-2 hover:border-blue-500"> *@
+                @*         @if (_businessCategories != null) *@
+                @*         { *@
+                @*             @foreach (string category in _businessCategories) *@
+                @*             { *@
+                @*                 <option value="@category">@category</option> *@
+                @*             } *@
+                @*         } *@
+                @*     </select> *@
+                @* </div> *@
 
             </div>
             <table class='mx-auto max-w-screen-2xl w-full rounded-lg bg-white divide-y divide-gray-300'>
@@ -98,38 +99,39 @@ else
                             <div class="flex items-center truncate">
                                 <div class="ml-1">
                                     <div class="text-sm font-medium text-gray-900">
-                                        @repo.Repository.Name
+                                        @repo.Name
                                     </div>
                                     <div class="text-sm text-gray-500 max-w-100px">
-                                        <a href="@repo.Repository.HtmlUrl" class="hover:underline">@repo.Repository.FullName</a>
+                                        <a href="@repo.HtmlUrl" class="hover:underline">@repo.FullName</a>
                                     </div>
                                 </div>
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-normal">
                             <div class="text-sm text-gray-900 line-clamp-3">
-                                <p class="line-clamp-4">@repo.Repository.Description</p>
+                                <p class="line-clamp-4">@repo.Description</p>
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                @repo.Repository.Language
+                                @repo.Language
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            @repo.Repository.StargazersCount
+                            @repo.StargazersCount
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            @repo.Repository.OpenIssuesCount
+                            @repo.OpenIssuesCount
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            @repo.Repository.ForksCount
+                            @repo.ForksCount
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            @repo.RepositoryScore
+                            @*TODO: Add Missing Repository Score Implementation*@
+                            @* @repo.RepositoryScore *@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <a href="@repo.Repository.HtmlUrl" class="text-blue-600 hover:text-blue-900 hover:underline">Contribute</a>
+                            <a href="@repo.HtmlUrl" class="text-blue-600 hover:text-blue-900 hover:underline">Contribute</a>
                         </td>
                     </tr>
                 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -21,7 +22,7 @@ namespace Services
         /// <returns>Array of repositories</returns>
         public async Task<CrawlerResult[]> GetAllRepositories()
         {
-            return await _httpClient.GetFromJsonAsync<CrawlerResult[]>("sample-data/repos.json");
+            return await _httpClient.GetFromJsonAsync<CrawlerResult[]>("sample-data/craft-repos.json");
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace Services
         /// <returns>List of strings that are the languages</returns>
         public async Task<List<string>> GetAllLanguagesFromRepos(IEnumerable<CrawlerResult> repositories)
         {
-            return repositories.Select(repo => repo.Repository.Language).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList();
+            return repositories.Select(repo => repo.Language).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList();
         }
 
         /// <summary>
@@ -41,8 +42,9 @@ namespace Services
         /// <returns>List of business categories</returns>
         public async Task<List<string>> GetAllBusinessCategories(IEnumerable<CrawlerResult> repoCrawlerResults)
         {
-            return repoCrawlerResults.Select(repo => repo.MetaData?.BusinessCategory)
-                .Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList();
+            // return repoCrawlerResults.Select(repo => repo.MetaData?.BusinessCategory)
+            //     .Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList();
+            throw new NotImplementedException("API is missing MetaData");
         }
 
         /// <summary>
@@ -54,14 +56,14 @@ namespace Services
         public async Task<List<CrawlerResult>> FilterRepositoryOnString(IEnumerable<CrawlerResult> repositories, string textToSearch)
         {
             return repositories.Where(r =>
-                r.Repository.Name.ToLowerInvariant().Contains(textToSearch) ||
-                // r.Repository.Topics.Any(s => s.ToLowerInvariant().Contains(textToSearch)) ||
-                r.Repository.Homepage != null && r.Repository.Homepage.ToLowerInvariant().Contains(textToSearch) ||
-                r.Repository.Description != null && r.Repository.Description.ToLowerInvariant().Contains(textToSearch) ||
-                r.Repository.FullName != null && r.Repository.FullName.ToLowerInvariant().Contains(textToSearch) ||
-                r.Repository.HtmlUrl != null && r.Repository.HtmlUrl.ToLowerInvariant().Contains(textToSearch) ||
-                r.Repository.License is {Name: { }} && r.Repository.License.Name.ToLowerInvariant().Contains(textToSearch) ||
-                r.Repository.Language != null && r.Repository.Language.ToLowerInvariant().Contains(textToSearch)).ToList();
+                r.Name.ToLowerInvariant().Contains(textToSearch) ||
+                // r.Topics.Any(s => s.ToLowerInvariant().Contains(textToSearch)) ||
+                r.Homepage != null && r.Homepage.ToLowerInvariant().Contains(textToSearch) ||
+                r.Description != null && r.Description.ToLowerInvariant().Contains(textToSearch) ||
+                r.FullName != null && r.FullName.ToLowerInvariant().Contains(textToSearch) ||
+                r.HtmlUrl != null && r.HtmlUrl.ToLowerInvariant().Contains(textToSearch) ||
+                r.License is {Name: { }} && r.License.Name.ToLowerInvariant().Contains(textToSearch) ||
+                r.Language != null && r.Language.ToLowerInvariant().Contains(textToSearch)).ToList();
         }
 
         /// <summary>
@@ -72,12 +74,14 @@ namespace Services
         /// <returns>A filtered list based on the Language that matched the provided string</returns>
         public async Task<List<CrawlerResult>> FilterRepositoryOnLanguage(IEnumerable<CrawlerResult> repositories, string languageToMatch)
         {
-            return repositories.Where(r => r.Repository.Language != null && r.Repository.Language.ToLowerInvariant().Contains(languageToMatch.ToLowerInvariant())).ToList();
+            return repositories.Where(r => r.Language != null && r.Language.ToLowerInvariant().Contains(languageToMatch.ToLowerInvariant())).ToList();
         }
 
+        // TODO: Add Missing Business Category implementation
         public async Task<List<CrawlerResult>> SortOnBusinessCategory(IEnumerable<CrawlerResult> repositories, string businessCategory)
         {
-            return repositories.Where(r => r.MetaData?.BusinessCategory == businessCategory).ToList();
+            // return repositories.Where(r => r.MetaData?.BusinessCategory == businessCategory).ToList();
+            throw new NotImplementedException("API is missing MetaData");
         }
 
         /// <summary>
@@ -88,13 +92,14 @@ namespace Services
         /// <returns>A sorted list of repositories based on the specified sort type</returns>
         public async Task<List<CrawlerResult>> SortRepository(IEnumerable<CrawlerResult> repositories, string sortType)
         {
+            // TODO: Add Missing Repository Score implementation
             return sortType switch
             {
-                "Name" => repositories.OrderByDescending(r => r.Repository.Name).ToList(),
-                "Stars" => repositories.OrderByDescending(r => r.Repository.StargazersCount).ToList(),
-                "Issues" => repositories.OrderByDescending(r => r.Repository.OpenIssuesCount).ToList(),
-                "Activity" => repositories.OrderByDescending(r => r.RepositoryScore).ToList(),
-                "Watchers" => repositories.OrderByDescending(r => r.Repository.WatchersCount).ToList(),
+                "Name" => repositories.OrderByDescending(r => r.Name).ToList(),
+                "Stars" => repositories.OrderByDescending(r => r.StargazersCount).ToList(),
+                "Issues" => repositories.OrderByDescending(r => r.OpenIssuesCount).ToList(),
+                // "Activity" => repositories.OrderByDescending(r => r.RepositoryScore).ToList(),
+                "Watchers" => repositories.OrderByDescending(r => r.WatchersCount).ToList(),
                 _ => new List<CrawlerResult>(repositories)
             };
         }
